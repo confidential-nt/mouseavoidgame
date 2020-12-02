@@ -1,0 +1,35 @@
+body {
+  background-color: black;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.gameBoard {
+  background-color: #cccccc;
+  width: 100vmin;
+  height: 100vmin;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(12, 1fr);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(21, 1fr);
+  grid-template-rows: 1fr;
+}
+
+.wall {
+  background-color: black;
+}
+
+.ball {
+  background-color: yellow;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
