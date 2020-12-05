@@ -30,7 +30,7 @@
             <div class="column"></div>
             <div class="column"></div>
             <div class="column"></div>
-            <div class="column"></div>
+            <div class="column finish">finish</div>
         </div>
         <div class="row">
             <div class="column"></div>
@@ -290,14 +290,25 @@
         </div>
     </div>
 
-    <div class="confirm hide">
+    <div class="failConfirm confirm hide">
         <div class="confirm__window">
+            <h1>Game Over!</h1>
             <p>Do you wanna start again?</p>
             <div class="window__btns">
                 <button value="yes">Yes</button>
                 <button value="no">No</button>
             </div>
         </div>
-    </div>    
+    </div>
+    <div class="finishConfirm confirm hide">
+        <div class="confirm__window">
+            <h1>Finish!</h1>
+            <p>Do you wanna start again?</p>
+            <div class="window__btns">
+                <button value="yes">Yes</button>
+                <button value="no">No</button>
+            </div>
+        </div>
+    </div>        
 </body>
 </html>

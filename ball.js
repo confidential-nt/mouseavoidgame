@@ -10,8 +10,6 @@ let start = false;
 let row;
 let cols;
 
-
-
 export function draw(){
     if(!start){
         const ballElement = document.createElement("div");
@@ -27,7 +25,9 @@ export function draw(){
 
     const ballElement = document.querySelector(".ball");
     row = rows[ball.y]
+    if(!row) return;
     cols = row.querySelectorAll(".column")
+    if(!cols[ball.x]) return;
     cols[ball.x].appendChild(ballElement);
     
 }
@@ -41,6 +41,12 @@ export function update(){
 export function bumpIntoMaze(){
     const walls = Array.from(document.querySelectorAll(".wall"))
     return walls.some(wall => wall.hasChildNodes());
+}
+
+export function onFinishLine(ball) {
+    const finishLine = Array.from(rows[0].querySelectorAll(".column"))
+    
+    return finishLine[finishLine.length - 1].contains(ball);
 }
 
 

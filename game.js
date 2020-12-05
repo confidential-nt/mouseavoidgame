@@ -1,21 +1,27 @@
-import {draw as drawBall, update as updateBall, bumpIntoMaze, ball} from "./ball.js";
+import {draw as drawBall, update as updateBall, bumpIntoMaze, ball, onFinishLine} from "./ball.js";
 import {outSideOfMaze} from "./maze.js";
 
-const confirm = document.querySelector(".confirm");
+const failConfirm = document.querySelector(".failConfirm");
+const finishConfirm = document.querySelector(".finishConfirm");
 const btns = document.querySelectorAll("button");
 let gameOver = false;
+let finish = false;
 
 function main(){
     if(gameOver){
-        confirm.classList.remove("hide");
+        failConfirm.classList.remove("hide");
+        return;
+    }
+    if(finish){
+        finishConfirm.classList.remove("hide");
         return;
     }
     window.requestAnimationFrame(main);
     updateBall();
     checkDeath();
-    if(gameOver) return;
+    checkFinish();
+    if(gameOver || finish) return;
     drawBall();
-   
 }
 
 
@@ -23,11 +29,19 @@ function checkDeath(){
     gameOver = bumpIntoMaze() || outSideOfMaze(ball);
 }
 
+function checkFinish(){
+    const ball = document.querySelector(".ball");
+    if(!ball) return;
+    finish = onFinishLine(ball)
+    
+}
+
 function handleRestart(){
     if(this.value == "yes"){
         window.location = "./index.html";
     }else {
-        confirm.classList.add("hide");
+        failConfirm.classList.add("hide");
+        finishConfirm.classList.add("hide");
     }
 }
 

@@ -38,6 +38,18 @@ button {
   border-radius: 50%;
 }
 
+.gem {
+  width: 20px;
+  height: 20px;
+  background-color: tomato;
+}
+
+.finish {
+  color: aqua;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .confirm {
   z-index: 1;
   position: absolute;
