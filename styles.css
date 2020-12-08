@@ -19,6 +19,16 @@ button {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(12, 1fr);
+  position: relative;
+}
+
+.scoreBoard {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 40px;
+  color: tomato;
 }
 
 .row {

@@ -1,11 +1,15 @@
 import {draw as drawBall, update as updateBall, bumpIntoMaze, ball, onFinishLine} from "./ball.js";
 import {outSideOfMaze} from "./maze.js";
+import {drawGem, eatGem} from "./gem.js";
 
 const failConfirm = document.querySelector(".failConfirm");
 const finishConfirm = document.querySelector(".finishConfirm");
 const btns = document.querySelectorAll("button");
+const scoreBoard = document.querySelector(".scoreBoard");
 let gameOver = false;
 let finish = false;
+let iseatGem = false;
+let score = 0;
 
 function main(){
     if(gameOver){
@@ -22,6 +26,8 @@ function main(){
     checkFinish();
     if(gameOver || finish) return;
     drawBall();
+    drawGem();
+    getScore();
 }
 
 
@@ -32,6 +38,7 @@ function checkDeath(){
 function checkFinish(){
     const ball = document.querySelector(".ball");
     if(!ball) return;
+    if(score !== 3) return;
     finish = onFinishLine(ball)
     
 }
@@ -43,6 +50,18 @@ function handleRestart(){
         failConfirm.classList.add("hide");
         finishConfirm.classList.add("hide");
     }
+}
+
+function getScore(){
+    const ball = document.querySelector(".ball");
+    iseatGem = eatGem(ball);
+
+    if(iseatGem){
+        score++;
+        scoreBoard.innerText = score;
+       
+    }
+    
 }
 
 
