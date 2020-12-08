@@ -6,10 +6,13 @@ const failConfirm = document.querySelector(".failConfirm");
 const finishConfirm = document.querySelector(".finishConfirm");
 const btns = document.querySelectorAll("button");
 const scoreBoard = document.querySelector(".scoreBoard");
+const ALL_GEMS = 3;
 let gameOver = false;
 let finish = false;
 let iseatGem = false;
 let score = 0;
+
+scoreBoard.innerText = `lefted gem:${ALL_GEMS}`;
 
 function main(){
     if(gameOver){
@@ -58,8 +61,7 @@ function getScore(){
 
     if(iseatGem){
         score++;
-        scoreBoard.innerText = score;
-       
+        scoreBoard.innerText = `lefted gem:${ALL_GEMS - score}`;
     }
     
 }
