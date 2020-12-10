@@ -31,6 +31,14 @@ button {
   color: tomato;
 }
 
+.timeBoard {
+  position: absolute;
+  top: 22px;
+  right: 135px;
+  font-size: 30px;
+  color: blueviolet;
+}
+
 .row {
   display: grid;
   grid-template-columns: repeat(21, 1fr);

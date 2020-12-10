@@ -1,6 +1,7 @@
 import {draw as drawBall, update as updateBall, bumpIntoMaze, ball, onFinishLine} from "./ball.js";
 import {outSideOfMaze} from "./maze.js";
 import {drawGem, eatGem} from "./gem.js";
+import {timer, timeOut, timerId} from "./time.js"
 
 const failConfirm = document.querySelector(".failConfirm");
 const finishConfirm = document.querySelector(".finishConfirm");
@@ -11,17 +12,26 @@ let gameOver = false;
 let finish = false;
 let iseatGem = false;
 let score = 0;
+let justAgo = false;
 
-scoreBoard.innerText = `lefted gem:${ALL_GEMS}`;
+
+scoreBoard.innerText = `left gems:${ALL_GEMS}`;
 
 function main(){
     if(gameOver){
         failConfirm.classList.remove("hide");
+        clearInterval(timerId);
         return;
     }
     if(finish){
         finishConfirm.classList.remove("hide");
+        clearInterval(timerId);
         return;
+    }
+    if(!justAgo){
+        const startTime = Date.now();
+        timer(startTime);
+        justAgo = true;
     }
     window.requestAnimationFrame(main);
     updateBall();
@@ -35,7 +45,7 @@ function main(){
 
 
 function checkDeath(){
-    gameOver = bumpIntoMaze() || outSideOfMaze(ball);
+    gameOver = bumpIntoMaze() || outSideOfMaze(ball) || timeOut();
 }
 
 function checkFinish(){
@@ -57,11 +67,13 @@ function handleRestart(){
 
 function getScore(){
     const ball = document.querySelector(".ball");
+    const eatSound = document.querySelector(`audio[data-sound="eatGem"]`)
     iseatGem = eatGem(ball);
 
     if(iseatGem){
         score++;
-        scoreBoard.innerText = `lefted gem:${ALL_GEMS - score}`;
+        scoreBoard.innerText = `left gems:${ALL_GEMS - score}`;
+        eatSound.play();
     }
     
 }
@@ -69,3 +81,5 @@ function getScore(){
 
 window.requestAnimationFrame(main);
 btns.forEach(btn => btn.addEventListener("click",handleRestart))
+
+
