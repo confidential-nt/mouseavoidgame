@@ -1,4 +1,4 @@
-const MAZE_SIZE_X = 21;
+export const MAZE_SIZE_X = 21;
 const MAZE_SIZE_Y = 12;
 
 export function outSideOfMaze(position){

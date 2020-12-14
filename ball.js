@@ -1,4 +1,4 @@
-import {getBallDirection} from "./input.js";
+import {getBallDirection} from "./direction.js";
 
 export let ball = {
     x: 0,
@@ -38,9 +38,10 @@ export function update(){
 
 
 
-export function bumpIntoMaze(){
+export function bumpIntoMaze(ball){
     const walls = Array.from(document.querySelectorAll(".wall"))
-    return walls.some(wall => wall.hasChildNodes());
+
+    return walls.some(wall => wall.contains(ball));
 }
 
 export function onFinishLine(ball) {
