@@ -2,7 +2,7 @@ import {draw as drawBall, update as updateBall, bumpIntoMaze, ball as ballLoc, o
 import {outSideOfMaze} from "./maze.js";
 import {drawGem, eatGem} from "./gem.js";
 import {timer, timeOut, timerId} from "./time.js"
-import { drawAttack, updateAttack } from "./attack.js";
+import { handleAttack} from "./attack.js";
 
 const failConfirm = document.querySelector(".failConfirm");
 const finishConfirm = document.querySelector(".finishConfirm");
@@ -36,14 +36,13 @@ function main(timestamp){
     }
     window.requestAnimationFrame(main);
     updateBall();
-    updateAttack(timestamp);
     checkDeath();
     checkFinish();
     if(gameOver || finish) return;
     drawBall();
     drawGem();
-    drawAttack();
     getScore();
+    handleAttack(timestamp);
 }
 
 
