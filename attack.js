@@ -1,5 +1,5 @@
-import { getAttackDirection } from "./direction.js";
 import { MAZE_SIZE_X } from "./maze.js";
+import { isBallHit } from "./ball.js";
 
 const rows = document.querySelectorAll(".row");
 const firstAttackRow = rows[1];
@@ -9,74 +9,105 @@ const firstAttackPos = firstAttackRow.querySelector(".column");
 const secondAttackPos = secondAttackRow.querySelector(".column");
 const lastAttackPos = lastAttackRow.querySelector(".column");
 
-let start = false;
-let create = false; //얘는 나중에 한분기 끝나고 다른 한분기 시작하게 할때 이용할 것.
+let create = false;
 
-let attacks = [
+const ATTACK_SPEED = 5;
+let lastRenderTime = 0;
+export let isBumpIntoMaze = 0;
+let capturedTime;
+
+export let attacks = [
   {
-    id: 1,
+    element: null,
     x: 0,
+    y: 1,
+    row: firstAttackRow,
   },
   {
-    id: 2,
+    element: null,
     x: 0,
+    y: 7,
+    row: secondAttackRow,
   },
   {
-    id: 3,
+    element: null,
     x: 0,
+    y: rows.length - 1,
+    row: lastAttackRow,
   },
 ];
 
-const ATTACK_SPEED = 2;
-
-let lastRenderTime = 0;
-
 export function drawAttack(timestamp) {
+  setDrawAttack(timestamp);
+  const setDoneAttack = attacks.filter((el) => el.element !== null);
+  setDoneAttack.forEach((el) => {
+    const columns = el.row.querySelectorAll(".column");
+    columns[el.x].appendChild(el.element);
+  });
+}
+
+export function updateAttack(timestamp) {
+  let progress = (timestamp - lastRenderTime) / 1000;
+  if (progress < 1 / ATTACK_SPEED) return;
+  lastRenderTime = timestamp;
+  attacks.forEach((el) => {
+    if (el.element) el.x++;
+  });
+
+  initAttack();
+}
+
+function setDrawAttack(timestamp) {
   const sec = Math.round(timestamp / 1000);
 
+  if (!capturedTime) capturedTime = sec;
+
   if (create) return;
-  const attack = document.createElement("div");
-  attack.classList.add("attack");
-  const attackElements = document.querySelectorAll(".attack");
+  const attackElement = document.createElement("div");
+  attackElement.classList.add("attack");
+
   switch (sec) {
-    case 2:
-      if (firstAttackPos.contains(attackElements[0])) return;
-      firstAttackPos.appendChild(attack);
+    case capturedTime + 2:
+      if (attacks[0].element) return;
+      firstAttackPos.appendChild(attackElement);
+      attacks[0].element = attackElement;
       break;
-    case 3:
-      if (secondAttackPos.contains(attackElements[1])) return;
-      secondAttackPos.appendChild(attack);
+    case capturedTime + 3:
+      if (attacks[1].element) return;
+      secondAttackPos.appendChild(attackElement);
+      attacks[1].element = attackElement;
       break;
-    case 4:
-      if (lastAttackPos.contains(attackElements[2])) return;
-      lastAttackPos.appendChild(attack);
+    case capturedTime + 4:
+      if (attacks[2].element) return;
+      lastAttackPos.appendChild(attackElement);
+      attacks[2].element = attackElement;
       create = true;
       break;
   }
 }
 
-// export function drawAttack() {
-//   const firstAttackRowCol = firstAttackRow.querySelectorAll(".column");
-//   if (!start) {
-//     firstDrawAttack();
-//     return;
-//   }
-//   if (attack.x > MAZE_SIZE_X) {
-//     start = !start;
-//     const lastPosition = firstAttackRowCol[firstAttackRowCol.length - 1];
-//     const lastAttack = lastPosition.querySelector(".attack");
-//     lastPosition.removeChild(lastAttack);
-//     attack.x = 0;
-//   }
+function initAttack() {
+  attacks.forEach((el) => {
+    if (!el.element) return;
+    if (el.x >= MAZE_SIZE_X || isBallHit(el)) {
+      isBumpIntoMaze++;
 
-//   const attackElement = document.querySelector(".attack");
+      const haveAttackCol = Array.from(
+        el.row.querySelectorAll(".column")
+      ).find((col) => col.contains(el.element));
+      haveAttackCol.removeChild(el.element);
+      el.x = 0;
+      el.element = null;
+    }
+  });
 
-//   firstAttackRowCol[attack.x].appendChild(attackElement);
-// }
+  if (isBumpIntoMaze === 3) {
+    attackRestart();
+    isBumpIntoMaze = 0;
+    capturedTime = null;
+  }
+}
 
-export function updateAttack(object, timestamp) {
-  let progress = (timestamp - lastRenderTime) / 1000;
-  if (progress < 1 / ATTACK_SPEED) return;
-  lastRenderTime = timestamp;
-  object.x = getAttackDirection();
+function attackRestart() {
+  create = false;
 }
