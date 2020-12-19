@@ -11,7 +11,8 @@ const rows = document.querySelectorAll(".row");
 let start = false;
 let row;
 let cols;
-export let healthPoint = 3;
+export let healthPoint = 4;
+const healthGauges = document.querySelectorAll(".healthPoint__gauge");
 
 export function draw() {
   if (!start) {
@@ -53,7 +54,7 @@ export function onFinishLine(ball) {
 export function isBallHit(el) {
   if (el.x === ball.x && el.y === ball.y) {
     healthPoint--;
-    healthPointBoard.innerText = `${healthPoint}HP`;
+    healthGauges[healthPoint].classList.add("gauge__hide");
     return true;
   }
 }

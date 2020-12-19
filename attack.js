@@ -11,7 +11,7 @@ const lastAttackPos = lastAttackRow.querySelector(".column");
 
 let create = false;
 
-const ATTACK_SPEED = 5;
+const ATTACK_SPEED = 8;
 let lastRenderTime = 0;
 export let isBumpIntoMaze = 0;
 let capturedTime;
@@ -111,3 +111,6 @@ function initAttack() {
 function attackRestart() {
   create = false;
 }
+
+//시작할 때 피 3개씩 줄어드는 버그 수정
+//Gem순서정하기?

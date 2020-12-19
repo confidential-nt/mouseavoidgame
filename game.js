@@ -24,7 +24,7 @@ let score = 0;
 let justAgo = false;
 
 scoreBoard.innerText = `left gems:${ALL_GEMS}`;
-healthPointBoard.innerText = `${healthPoint}HP`;
+// healthPointBoard.innerText = `${healthPoint}HP`;
 
 function main(timestamp) {
   if (gameOver) {
